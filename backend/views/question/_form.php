@@ -7,6 +7,7 @@ use backend\models\Cycle;
 use backend\models\Level;
 use backend\models\Subject;
 use backend\models\Topic;
+//use yii\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Questions */
@@ -68,19 +69,33 @@ use backend\models\Topic;
     ?>
     <?= $form->field($model, 'section_id')->dropdownList($listData,['prompt'=>'Choose...']) ?>
 
+    <?= $form->field($model,'question_image')->fileInput()->label("Question Image"); ?>
+
+    <?php if ($model->question_image): ?>
+        <div class="form-group">
+            <?= Html::img('@web/'.$model->question_image, ['class' => '','width'=>'100','height'=>'100']); ?>
+          
+        </div>
+    <?php endif; ?>
+
+    <?= $form->field($model,'answer_image')->fileInput()->label("Answer Image"); ?>
+    <?php if ($model->answer_image): ?>
+        <div class="form-group">
+            <?= Html::img('@web/'.$model->answer_image, ['class' => '','width'=>'100','height'=>'100']); ?>
+            
+        </div>
+    <?php endif; ?>
+
     <?= $form->field($model, 'status')->dropdownList(array('1'=>'Active','0'=>'InActive'),array('prompt'=>'Select Status')) ?>
 
-    <?= $form->field($model,'file')->fileInput(); ?>
 
-    <?= $form->field($model,'file')->fileInput(); ?>
+    <?= $form->field($model, 'created_by')->hiddenInput()->label(''); ?>
 
-    <?= $form->field($model, 'created_by')->textInput() ?>
+    <?= $form->field($model, 'updated_by')->hiddenInput()->label('');  ?>
 
-    <?= $form->field($model, 'updated_by')->textInput() ?>
+    <?= $form->field($model, 'created_at')->hiddenInput()->label('');  ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <?= $form->field($model, 'updated_at')->hiddenInput()->label('');  ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -89,3 +104,6 @@ use backend\models\Topic;
     <?php ActiveForm::end(); ?>
 
 </div>
+<style>
+.field-questions-updated_at,.field-questions-created_by,.field-questions-updated_by,.field-questions-created_at{display:none;}
+</style>

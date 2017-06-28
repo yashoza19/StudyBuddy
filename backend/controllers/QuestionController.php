@@ -19,7 +19,8 @@ class QuestionController extends Controller
      * @inheritdoc
      */
 
-    public $file;
+    public $answer_image;
+    public $question_image;
 
     //public $filer;
 
@@ -73,32 +74,32 @@ class QuestionController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
 
-            $imageName="ques"+time();
+            $imageName="ques".time();
+            $imageName1="ans".time();
 
             if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
             {
                 Yii::$app->response->format='json';
                 return ActiveForm::validate($model);
             }
-            $model->file=UploadedFile::getInstance($model, 'file');
-            //$model->filer=UploadedFile::getInstance($model, 'filer');
-           //print_r($_FILES);die;
-            
-            //if($model->validate()){
-            
-            $model->file->saveAs('uploads/'.$imageName.'.'.$model->file->extension );
-            //$model->filer->saveAs('uploads/'.$imageName.'.'.$model->filer->extension );
-            $model->question_image='uploads/'.$imageName.'.'.$model->file->extension;
-            $model->answer_image='uploads/'.$imageName.'.'.$model->file->extension;
-        //}
-            
+            if($_FILES['Questions']['name']['question_image'] != '')
+            {
+                $model->question_image=UploadedFile::getInstance($model, 'question_image');
+                if(isset($model->question_image) && !empty($model->question_image))
+                {
+                    $model->question_image->name = 'uploads/'.$imageName.'.'.$model->question_image->extension;
+                    $model->question_image->saveAs('uploads/'.$imageName.'.'.$model->question_image->extension );
+                }
+            }
+            if($_FILES['Questions']['name']['answer_image'] != ''){
 
-
-
-            /*$model->file1=UploadedFile::getInstance($model, 'file1');
-            $model->file1->saveAs('uploads/'.$imageName.'.'.$model->extension );
-
-            $model->answer_image='uploads/'.$answerName.'.'.$model->extension;*/
+                $model->answer_image=UploadedFile::getInstance($model, 'answer_image');
+                if(isset($model->question_image) && !empty($model->question_image))
+                {
+                    $model->answer_image->name = 'uploads/'.$imageName1.'.'.$model->answer_image->extension;
+                    $model->answer_image->saveAs('uploads/'.$imageName1.'.'.$model->answer_image->extension );
+                }
+            }
 
             $model->save(false);
             //rename & DB update query.
@@ -119,9 +120,55 @@ class QuestionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $oldQuestionImage = $model->question_image;
+        $oldAnswerImage = $model->answer_image;
         $postValue=Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //print_r($postValue);
+
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->question_id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }*/
+        if ($model->load(Yii::$app->request->post())) {
+
+
+            $imageName="ques".time();
+            $imageName1="ans".time();
+
+            if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+            {
+                Yii::$app->response->format='json';
+                return ActiveForm::validate($model);
+            }
+            if($_FILES['Questions']['name']['question_image'] != '')
+            {
+                $model->question_image=UploadedFile::getInstance($model, 'question_image');
+                if(isset($model->question_image) && !empty($model->question_image))
+                {
+                    $model->question_image->name = 'uploads/'.$imageName.'.'.$model->question_image->extension;
+                    $model->question_image->saveAs('uploads/'.$imageName.'.'.$model->question_image->extension );
+                }
+            }else{
+                $model->question_image = $oldQuestionImage;
+            }
+            if($_FILES['Questions']['name']['answer_image'] != ''){
+
+                $model->answer_image=UploadedFile::getInstance($model, 'answer_image');
+                if(isset($model->question_image) && !empty($model->question_image))
+                {
+                    $model->answer_image->name = 'uploads/'.$imageName1.'.'.$model->answer_image->extension;
+                    $model->answer_image->saveAs('uploads/'.$imageName1.'.'.$model->answer_image->extension );
+                }
+            }else{
+                $model->answer_image = $oldAnswerImage;
+            }
+            
+            $model->save(false);
+            //rename & DB update query.
             return $this->redirect(['view', 'id' => $model->question_id]);
         } else {
             return $this->render('update', [

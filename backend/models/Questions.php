@@ -49,10 +49,11 @@ public $file;
     public function rules()
     {
         return [
-            [['name', 'cycle_id', 'level_id','subject_id', 'topic_id', 'year_id', 'section_id', 'status', 'question_image', 'answer_image','created_by', 'updated_by'], 'required'],
-            [['name', 'subject_id', 'cycle_id', 'level_id', 'topic_id', 'year_id', 'section_id', 'status',], 'integer'],
+            [['name', 'cycle_id', 'level_id','subject_id', 'topic_id', 'year_id', 'section_id', 'status'], 'required'],
+            [['subject_id', 'cycle_id', 'level_id', 'topic_id', 'year_id', 'section_id', 'status',], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['file'],'file'],
+             //['question_image', 'required', 'message' => 't be blank', 'on'=>'create'],
+            [['question_image','answer_image'],'file'],
             [['question_image', 'answer_image'], 'string', 'max' => 255],
             [['year_id'], 'exist', 'skipOnError' => true, 'targetClass' => Year::className(), 'targetAttribute' => ['year_id' => 'year_id']],
             [['topic_id'], 'exist', 'skipOnError' => true, 'targetClass' => Topic::className(), 'targetAttribute' => ['topic_id' => 'topic_id']],
@@ -80,10 +81,7 @@ public $file;
             'status' => 'Status',
             'question_image' => 'Question Image',
             'answer_image' => 'Answer Image',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            
         ];
     }
 
