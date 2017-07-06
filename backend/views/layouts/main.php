@@ -135,10 +135,6 @@ DashboardAsset::register($this);
           <i class="fa fa-book">
           </i> <span>Exam Management</span></a>
         </li>
-        <li><a href="http://localhost/studybuddy/backend/web/index.php?r=exam-question">
-          <i class="fa fa-book">
-          </i> <span>ExamQuestion Management</span></a>
-        </li>
         <li><a href="http://localhost/studybuddy/backend/web/index.php?r=question">
           <i class="fa fa-book">
           </i> <span>Question Management</span></a>
