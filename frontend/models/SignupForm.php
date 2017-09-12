@@ -1,6 +1,5 @@
 <?php
 namespace frontend\models;
-
 use yii\base\Model;
 use common\models\User;
 
@@ -19,7 +18,7 @@ class SignupForm extends Model
     /**
      * @inheritdoc
      */
-    public function rules()
+   public function rules()
     {
         return [
             ['username', 'trim'],
